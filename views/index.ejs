@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+  <h1>Welcome to the <%= pageTitle %> of Community Service Hub</h1>
+  <p>
+    Connecting volunteers with organizations, projects, and causes that make a
+    difference. Explore our partner organizations, browse current service
+    projects, or find opportunities by category.
+  </p>
+  <div class="hero-actions">
+    <a href="/organizations" class="btn btn-primary">View Organizations</a>
+    <a href="/projects" class="btn btn-secondary">View Projects</a>
+  </div>
+</section>
+
+<section class="features">
+  <div class="feature-card">
+    <h2>Organizations</h2>
+    <p>Meet the nonprofits and community groups leading local initiatives.</p>
+  </div>
+  <div class="feature-card">
+    <h2>Service Projects</h2>
+    <p>Find upcoming projects you can volunteer for right now.</p>
+  </div>
+  <div class="feature-card">
+    <h2>Categories</h2>
+    <p>Browse opportunities by cause area, from environmental to health.</p>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

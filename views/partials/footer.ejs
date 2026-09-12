@@ -1,0 +1,15 @@
+  </main>
+  <footer class="site-footer">
+    <p>&copy; <%= new Date().getFullYear() %> Community Service Hub. All rights reserved.</p>
+  </footer>
+  <script>
+    const navToggle = document.getElementById('navToggle');
+    const siteNav = document.getElementById('siteNav');
+
+    navToggle.addEventListener('click', () => {
+      const isOpen = siteNav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', isOpen);
+    });
+  </script>
+</body>
+</html>
