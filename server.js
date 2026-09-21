@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
+import { getAllProjects } from './src/models/projects.js';
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -39,24 +40,18 @@ app.get('/organizations', async (req, res) => {
 
 // Service Projects page
 app.get('/projects', async (req, res) => {
-  const pageTitle = 'Service Projects';
+  try {
+    const pageTitle = 'Service Projects';
+    const projects = await getAllProjects();
 
-  const projects = [
-    {
-      name: 'Riverbank Cleanup Day',
-      description: 'Volunteers collect litter and restore native plants along the riverbank.'
-    },
-    {
-      name: 'After-School Tutoring',
-      description: 'Weekly tutoring sessions for elementary students in math and reading.'
-    },
-    {
-      name: 'Winter Coat Drive',
-      description: 'Collecting and distributing warm coats to families in need.'
-    }
-  ];
+    // Verify the query works (safe to remove once you've confirmed the output)
+    console.log(projects);
 
-  res.render('projects', { pageTitle, projects });
+    res.render('projects', { pageTitle, projects });
+  } catch (error) {
+    console.error('Error loading projects:', error);
+    res.status(500).send('Sorry, something went wrong loading the service projects.');
+  }
 });
 
 // Service Project Categories page

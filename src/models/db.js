@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import { Pool } from 'pg';
-import { getAllOrganizations } from './organizations.js';
 
 /**
  * Connection pool for PostgreSQL database.
