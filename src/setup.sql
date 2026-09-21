@@ -1,7 +1,9 @@
 -- ========================================
 -- Reset (lets you re-run this file safely)
--- Drop the child table (project) before the parent (organization).
+-- Drop child tables before the tables they reference.
 -- ========================================
+DROP TABLE IF EXISTS project_category;
+DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS project;
 DROP TABLE IF EXISTS organization;
 
@@ -78,9 +80,104 @@ FROM (
 JOIN organization o ON o.name = v.org_name;
 
 -- ========================================
+-- Category Table
+-- ========================================
+CREATE TABLE category (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- ========================================
+-- Insert sample data: Categories
+-- ========================================
+INSERT INTO category (name)
+VALUES
+('Environmental'),
+('Educational'),
+('Community Service'),
+('Health and Wellness');
+
+-- ========================================
+-- Project/Category Junction Table
+-- Models the many-to-many relationship:
+--   a project can have many categories, and
+--   a category can have many projects.
+-- The composite primary key (project_id, category_id) prevents
+-- linking the same project to the same category twice.
+-- ========================================
+CREATE TABLE project_category (
+    project_id INTEGER NOT NULL
+        REFERENCES project (project_id)
+        ON DELETE CASCADE,
+    category_id INTEGER NOT NULL
+        REFERENCES category (category_id)
+        ON DELETE CASCADE,
+    PRIMARY KEY (project_id, category_id)
+);
+
+-- The composite primary key already speeds up lookups by project_id.
+-- This index speeds up lookups by category_id (e.g., "all projects in a category").
+CREATE INDEX idx_project_category_category_id ON project_category (category_id);
+
+-- ========================================
+-- Associate projects with categories
+-- Project titles and category names are used to look up the ids,
+-- so this doesn't depend on the ids being in any particular order.
+-- Every project gets at least one category; several get two.
+-- ========================================
+INSERT INTO project_category (project_id, category_id)
+SELECT p.project_id, c.category_id
+FROM (
+    VALUES
+    -- BrightFuture Builders
+    ('Community Playground Build', 'Community Service'),
+    ('Community Playground Build', 'Environmental'),
+    ('Senior Home Ramp Repair', 'Community Service'),
+    ('Senior Home Ramp Repair', 'Health and Wellness'),
+    ('Bus Stop Shelter Project', 'Community Service'),
+    ('Community Center Roof Patch', 'Community Service'),
+    ('Garden Bridge Construction', 'Community Service'),
+    ('Garden Bridge Construction', 'Environmental'),
+
+    -- GreenHarvest Growers
+    ('Fall Harvest Festival', 'Community Service'),
+    ('Fall Harvest Festival', 'Health and Wellness'),
+    ('Composting Workshop', 'Environmental'),
+    ('Composting Workshop', 'Educational'),
+    ('Rooftop Garden Planting Day', 'Environmental'),
+    ('Kids Seed-Starting Class', 'Educational'),
+    ('Spring Orchard Planting', 'Environmental'),
+    ('Spring Orchard Planting', 'Community Service'),
+
+    -- UnityServe Volunteers
+    ('Food Pantry Sorting Day', 'Community Service'),
+    ('Food Pantry Sorting Day', 'Health and Wellness'),
+    ('Winter Coat Drive', 'Community Service'),
+    ('Winter Coat Drive', 'Health and Wellness'),
+    ('Holiday Meal Delivery', 'Community Service'),
+    ('Holiday Meal Delivery', 'Health and Wellness'),
+    ('Neighborhood Cleanup Day', 'Environmental'),
+    ('Neighborhood Cleanup Day', 'Community Service'),
+    ('Volunteer Orientation & Resource Fair', 'Educational'),
+    ('Volunteer Orientation & Resource Fair', 'Community Service')
+) AS v (project_title, category_name)
+JOIN project p ON p.title = v.project_title
+JOIN category c ON c.name = v.category_name;
+
+-- ========================================
 -- Verify the data
 -- ========================================
--- SELECT p.project_date, p.title, o.name AS organization
+-- Projects with their organization and categories:
+-- SELECT p.project_date, p.title, o.name AS organization,
+--        STRING_AGG(c.name, ', ' ORDER BY c.name) AS categories
 -- FROM project p
 -- JOIN organization o ON p.organization_id = o.organization_id
+-- JOIN project_category pc ON p.project_id = pc.project_id
+-- JOIN category c ON pc.category_id = c.category_id
+-- GROUP BY p.project_id, p.project_date, p.title, o.name
 -- ORDER BY p.project_date;
+--
+-- Any project with NO category (should return 0 rows):
+-- SELECT p.title FROM project p
+-- LEFT JOIN project_category pc ON p.project_id = pc.project_id
+-- WHERE pc.project_id IS NULL;

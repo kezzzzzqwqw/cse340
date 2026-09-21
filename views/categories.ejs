@@ -9,7 +9,22 @@
   <% categories.forEach((category) => { %>
     <div class="card category-card">
       <div class="card-body">
-        <h2><%= category %></h2>
+        <h2><%= category.name %></h2>
+
+        <% if (category.projects.length === 0) { %>
+          <p>No projects in this category yet.</p>
+        <% } else { %>
+          <ul>
+            <% category.projects.forEach((project) => { %>
+              <% const formattedDate = project.project_date.toLocaleDateString('en-US', {
+                   year: 'numeric',
+                   month: 'long',
+                   day: 'numeric'
+                 }); %>
+              <li><%= formattedDate %>: <%= project.title %> (<%= project.organization_name %>)</li>
+            <% }) %>
+          </ul>
+        <% } %>
       </div>
     </div>
   <% }) %>
