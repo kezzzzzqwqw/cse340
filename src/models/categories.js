@@ -69,6 +69,40 @@ const getAllCategoriesWithProjects = async () => {
     return [...categories.values()];
 };
 
+const getCategoryDetails = async (categoryId) => {
+    const query = `
+        SELECT
+            category_id,
+            name
+        FROM category
+        WHERE category_id = $1;
+    `;
 
+    const queryParams = [categoryId];
+    const result = await db.query(query, queryParams);
 
-export { getAllCategories, getAllCategoriesWithProjects };
+    // Return the first row, or null if no category has that ID
+    return result.rows.length > 0 ? result.rows[0] : null;
+};
+
+const getCategoriesByProjectId = async (projectId) => {
+    const query = `
+        SELECT
+            c.category_id,
+            c.name
+        FROM category c
+        JOIN project_category pc
+            ON c.category_id = pc.category_id
+        WHERE pc.project_id = $1
+        ORDER BY c.name;
+    `;
+
+    const queryParams = [projectId];
+    const result = await db.query(query, queryParams);
+
+    return result.rows;
+};
+
+// Export the model functions
+export { getAllCategoriesWithProjects, getCategoryDetails, getCategoriesByProjectId };
+

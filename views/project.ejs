@@ -19,6 +19,14 @@
         <strong>Organization:</strong>
         <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>
       </p>
+
+      <% if (categories.length > 0) { %>
+        <ul class="tags" aria-label="Categories">
+          <% categories.forEach((category) => { %>
+            <li><a class="tag" href="/category/<%= category.category_id %>"><%= category.name %></a></li>
+          <% }); %>
+        </ul>
+      <% } %>
     </div>
   </div>
 </section>

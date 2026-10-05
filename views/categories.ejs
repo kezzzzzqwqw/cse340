@@ -9,7 +9,7 @@
   <% categories.forEach((category) => { %>
     <div class="card category-card">
       <div class="card-body">
-        <h2><%= category.name %></h2>
+        <h2><a href="/category/<%= category.category_id %>"><%= category.name %></a></h2>
 
         <% if (category.projects.length === 0) { %>
           <p>No projects in this category yet.</p>
@@ -21,7 +21,11 @@
                    month: 'long',
                    day: 'numeric'
                  }); %>
-              <li><%= formattedDate %>: <%= project.title %> (<%= project.organization_name %>)</li>
+              <li>
+              <%= formattedDate %>:
+              <a href="/project/<%= project.project_id %>"><%= project.title %></a>
+              (<a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>)
+            </li>
             <% }) %>
           </ul>
         <% } %>
