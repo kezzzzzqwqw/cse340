@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+
+<section class="page-header">
+  <h1><%= project.title %></h1>
+</section>
+
+<section class="card-grid">
+  <% const formattedDate = project.project_date.toLocaleDateString('en-US', {
+       year: 'numeric',
+       month: 'long',
+       day: 'numeric'
+     }); %>
+  <div class="card">
+    <div class="card-body">
+      <p><%= project.description %></p>
+      <p><strong>Date:</strong> <%= formattedDate %></p>
+      <p><strong>Location:</strong> <%= project.location %></p>
+      <p>
+        <strong>Organization:</strong>
+        <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

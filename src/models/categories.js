@@ -69,4 +69,6 @@ const getAllCategoriesWithProjects = async () => {
     return [...categories.values()];
 };
 
+
+
 export { getAllCategories, getAllCategoriesWithProjects };

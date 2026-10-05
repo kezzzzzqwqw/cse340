@@ -52,9 +52,15 @@ img {
   display: block;
 }
 
+li img {
+    width: 400px;
+    height: 400px;
+    object-fit: contain;
+}
+
 a {
-  color: var(--color-primary);
-  text-decoration: none;
+    color: black;
+    text-decoration: none;
 }
 
 a:hover,
