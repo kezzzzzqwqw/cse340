@@ -1,0 +1,29 @@
+<%- include('partials/header') %>
+
+<section class="page-header">
+  <h1><%= pageTitle %></h1>
+  <p>Update the name of this category.</p>
+</section>
+
+<form class="form-card" action="/edit-category/<%= categoryDetails.category_id %>" method="POST">
+  <div class="form-group">
+    <label for="name">Category Name</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      value="<%= categoryDetails.name %>"
+      required
+      maxlength="100"
+      aria-describedby="name-help"
+    />
+    <p id="name-help" class="form-help">Required. Up to 100 characters.</p>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit">Save Changes</button>
+    <a href="/category/<%= categoryDetails.category_id %>" class="btn btn-secondary">Cancel</a>
+  </div>
+</form>
+
+<%- include('partials/footer') %>

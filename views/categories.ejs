@@ -3,6 +3,9 @@
 <section class="page-header">
   <h1><%= pageTitle %></h1>
   <p>Browse service projects by category.</p>
+  <div class="card-actions">
+    <a href="/new-category" class="btn btn-primary btn-small">Add New Category</a>
+  </div>
 </section>
 
 <section class="card-grid">
@@ -22,13 +25,17 @@
                    day: 'numeric'
                  }); %>
               <li>
-              <%= formattedDate %>:
-              <a href="/project/<%= project.project_id %>"><%= project.title %></a>
-              (<a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>)
-            </li>
+                <%= formattedDate %>:
+                <a href="/project/<%= project.project_id %>"><%= project.title %></a>
+                (<a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>)
+              </li>
             <% }) %>
           </ul>
         <% } %>
+
+        <div class="card-actions">
+          <a href="/edit-category/<%= category.category_id %>" class="btn btn-secondary btn-small">Edit</a>
+        </div>
       </div>
     </div>
   <% }) %>

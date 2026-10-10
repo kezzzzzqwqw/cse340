@@ -1,11 +1,25 @@
   </main>
-      <footer>
-        <p>&copy; <%= new Date().getFullYear() %> CSE 340 Service Network.
-        <% if (NODE_ENV === 'development') { %>
-            (Development mode)
-        <% } %>
-        
-        </p>
-    </footer>
+
+  <footer class="site-footer">
+    <p>
+      &copy; <%= new Date().getFullYear() %> CSE 340 Service Network.
+      <% if (NODE_ENV === 'development') { %>
+        (Development mode)
+      <% } %>
+    </p>
+  </footer>
+
+  <script>
+    // Mobile navigation toggle
+    const navToggle = document.getElementById('navToggle');
+    const siteNav = document.getElementById('siteNav');
+
+    if (navToggle && siteNav) {
+      navToggle.addEventListener('click', () => {
+        const isOpen = siteNav.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+      });
+    }
+  </script>
 </body>
 </html>
