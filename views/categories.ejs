@@ -3,9 +3,11 @@
 <section class="page-header">
   <h1><%= pageTitle %></h1>
   <p>Browse service projects by category.</p>
+  <% if (user && user.role_name === 'admin') { %>
   <div class="card-actions">
     <a href="/new-category" class="btn btn-primary btn-small">Add New Category</a>
   </div>
+  <% } %>
 </section>
 
 <section class="card-grid">
@@ -33,9 +35,11 @@
           </ul>
         <% } %>
 
-        <div class="card-actions">
-          <a href="/edit-category/<%= category.category_id %>" class="btn btn-secondary btn-small">Edit</a>
-        </div>
+        <% if (user && user.role_name === 'admin') { %>
+          <div class="card-actions">
+            <a href="/edit-category/<%= category.category_id %>" class="btn btn-secondary btn-small">Edit</a>
+          </div>
+        <% } %>
       </div>
     </div>
   <% }) %>
