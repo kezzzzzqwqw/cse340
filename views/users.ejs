@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+
+<section class="page-header">
+  <h1><%= pageTitle %></h1>
+  <p>All registered user accounts and their roles.</p>
+</section>
+
+<section>
+  <% if (users.length === 0) { %>
+    <p>No users are registered yet.</p>
+  <% } else { %>
+    <div class="table-wrapper">
+      <table class="data-table">
+        <caption class="visually-hidden">Registered users</caption>
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email (Username)</th>
+            <th scope="col">Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach((u) => { %>
+            <tr>
+              <td><%= u.name %></td>
+              <td><%= u.email %></td>
+              <td><%= u.role_name %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+
+  <p><a href="/dashboard">Back to Dashboard</a></p>
+</section>
+
+<%- include('partials/footer') %>
