@@ -9,4 +9,49 @@
   <p><a href="/users">View All Users</a></p>
 <% } %>
 
+<section class="dashboard-section">
+  <h2>My Volunteer Projects</h2>
+
+  <% if (volunteerProjects.length === 0) { %>
+    <p>You haven't signed up to volunteer for any projects yet. Browse the <a href="/projects">service projects</a> to get started.</p>
+  <% } else { %>
+    <div class="table-wrapper">
+      <table class="data-table">
+        <caption class="visually-hidden">Projects you are volunteering for</caption>
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Project</th>
+            <th scope="col">Organization</th>
+            <th scope="col">Location</th>
+            <th scope="col"><span class="visually-hidden">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% volunteerProjects.forEach((project) => { %>
+            <tr>
+              <td>
+                <%= project.project_date.toLocaleDateString('en-US', {
+                      year: 'numeric', month: 'short', day: 'numeric'
+                    }) %>
+              </td>
+              <td><a href="/project/<%= project.project_id %>"><%= project.title %></a></td>
+              <td><a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a></td>
+              <td><%= project.location %></td>
+              <td>
+                <form method="POST" action="/project/<%= project.project_id %>/unvolunteer" class="inline-form">
+                  <input type="hidden" name="returnTo" value="dashboard">
+                  <button type="submit" class="btn btn-secondary btn-small">
+                    Remove<span class="visually-hidden"> me from <%= project.title %></span>
+                  </button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</section>
+
 <%- include('partials/footer') %>

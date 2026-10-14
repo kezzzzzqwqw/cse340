@@ -2,6 +2,7 @@
 -- Reset (lets you re-run this file safely)
 -- Drop child tables before the tables they reference.
 -- ========================================
+DROP TABLE IF EXISTS volunteer;
 DROP TABLE IF EXISTS project_category;
 DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS project;
@@ -203,3 +204,24 @@ CREATE TABLE users (
     role_id INTEGER REFERENCES roles(role_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- ========================================
+-- Volunteer Table
+-- Junction table for the many-to-many relationship:
+--   a user can volunteer for many projects, and
+--   a project can have many volunteers.
+-- The composite primary key prevents signing up twice.
+-- ========================================
+CREATE TABLE volunteer (
+    user_id INTEGER NOT NULL
+        REFERENCES users (user_id)
+        ON DELETE CASCADE,
+    project_id INTEGER NOT NULL
+        REFERENCES project (project_id)
+        ON DELETE CASCADE,
+    signed_up_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, project_id)
+);
+
+-- The primary key covers lookups by user_id; this covers lookups by project_id.
+CREATE INDEX idx_volunteer_project_id ON volunteer (project_id);

@@ -42,6 +42,7 @@ import {
     showDashboard,
     showUsersPage
 } from './controllers/users.js';
+import { processVolunteerSignup, processVolunteerRemoval } from './controllers/volunteers.js';
 
 
 const router = express.Router();
@@ -59,6 +60,10 @@ router.get('/organization/:id', showOrganizationDetailsPage);
 
 // Route for service project details page
 router.get('/project/:id', showProjectDetailsPage);
+
+// Protected routes to volunteer for / remove volunteering from a project
+router.post('/project/:id/volunteer', requireLogin, processVolunteerSignup);
+router.post('/project/:id/unvolunteer', requireLogin, processVolunteerRemoval);
 
 // Route for category details page
 router.get('/category/:id', showCategoryDetailsPage);

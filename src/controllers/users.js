@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { createUser, authenticateUser, getAllUsers } from '../models/users.js';
+import { getVolunteerProjectsByUserId } from '../models/volunteers.js';
 
 const showUserRegistrationForm = (req, res) => {
     res.render('register', {
@@ -95,15 +96,24 @@ const requireRole = (role) => {
     };
 };
 
-const showDashboard = (req, res) => {
-    const { name, email } = req.session.user;
+const showDashboard = async (req, res) => {
+    const { user_id, name, email } = req.session.user;
 
-    res.render('dashboard', {
-        title: 'Dashboard',
-        pageTitle: 'Dashboard',
-        name,
-        email
-    });
+    try {
+        const volunteerProjects = await getVolunteerProjectsByUserId(user_id);
+
+        res.render('dashboard', {
+            title: 'Dashboard',
+            pageTitle: 'Dashboard',
+            name,
+            email,
+            volunteerProjects
+        });
+    } catch (error) {
+        console.error('Error loading dashboard:', error);
+        req.flash('error', 'Unable to load your volunteer projects. Please try again.');
+        res.redirect('/');
+    }
 };
 
 const showUsersPage = async (req, res) => {

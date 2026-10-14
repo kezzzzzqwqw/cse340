@@ -617,3 +617,25 @@ button[type="submit"]:focus-visible {
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* ----------------------------- Volunteering ----------------------------- */
+
+.inline-form {
+  display: inline;
+  margin: 0;
+}
+
+.volunteer-box {
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
+
+.volunteer-status {
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-1);
+}
+
+.dashboard-section {
+  margin-top: var(--space-4);
+}
